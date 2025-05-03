@@ -1,0 +1,303 @@
+/* assets/style.css */
+
+/* --- Variables and Basic Setup --- */
+:root {
+    --bg-primary: #202123; /* Main background (darker) */
+    --bg-secondary: #343541; /* Slightly lighter bg (bubbles, input) */
+    --bg-sidebar: #2a2b32; /* Sidebar background */
+    --text-primary: #ececf1; /* Main text */
+    --text-secondary: #d1d5db; /* Lighter text */
+    --border-color: #4d4d4f;
+    --accent-color: #10a37f; /* Teal accent */
+    --user-bubble-bg: transparent; /* User bubbles often match primary bg */
+    --bot-bubble-bg: var(--bg-secondary);
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent body scrolling */
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* Common UI font */
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Hide default scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+/* --- Main Layout: Sidebar + Content --- */
+#app-container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+}
+
+#sidebar {
+    width: 260px;
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    background-color: var(--bg-sidebar);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+}
+
+#main-content {
+    flex-grow: 1; /* Take remaining width */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* CHANGED: Use percentage for better flex child height calculation */
+    position: relative; /* Needed for absolute positioning of input */
+}
+
+/* --- Sidebar Content --- */
+#sidebar h5 {
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Simple button styling for sidebar actions */
+.sidebar-button {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    text-align: left;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+.sidebar-button:hover {
+    background-color: #444654; /* Slightly lighter hover */
+}
+.sidebar-button .btn-text { /* Class for text inside button */
+    margin-left: 8px;
+}
+
+
+/* --- Main Content Area --- */
+
+/* Top section for upload/info - keep minimal */
+#top-main-area {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-primary); /* Match background */
+    flex-shrink: 0;
+}
+
+#upload-data {
+    border: 1px dashed var(--border-color);
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    background-color: var(--bg-secondary); /* Slightly different bg */
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.9em;
+    width: 100%;
+    display: block;
+    margin-bottom: 8px;
+}
+#upload-data a { color: var(--accent-color); text-decoration: none; }
+#upload-data:hover { border-color: var(--text-secondary); }
+
+/* Feedback Alerts */
+.alert {
+    margin-top: 8px; margin-bottom: 0; padding: 0.6rem 1rem;
+    font-size: 0.85em; border-radius: 4px; border: 1px solid transparent;
+}
+.alert-success { background-color: rgba(16, 163, 127, 0.15); border-color: rgba(16, 163, 127, 0.3); color: #6ee7b7;}
+.alert-danger { background-color: rgba(220, 53, 69, 0.15); border-color: rgba(220, 53, 69, 0.3); color: #f1aeb5;}
+.alert-info { background-color: rgba(13, 202, 240, 0.15); border-color: rgba(13, 202, 240, 0.3); color: #9eeaf9;}
+.alert-warning { background-color: rgba(255, 193, 7, 0.15); border-color: rgba(255, 193, 7, 0.3); color: #ffeaa1;}
+
+#doc-info-area {
+    font-size: 0.8em; color: var(--text-secondary); text-align: center;
+    margin-top: 5px; min-height: 16px;
+}
+
+/* Chat display wrapper - takes up space and scrolls */
+#chat-display-wrapper {
+    flex-grow: 1; /* Takes up all available vertical space */
+    overflow-y: auto; /* Enables vertical scrolling */
+    /* CHANGED: Increased bottom padding to prevent content from hiding behind the fixed input */
+    /* Adjust 120px based on actual input height + buffer */
+    padding: 20px 10% 120px 10%;
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, transparent, var(--bg-primary) 95%); /* Fade effect at bottom */
+
+}
+
+/* Individual message containers (to include potential icons later) */
+.message-container {
+    display: flex;
+    padding: 15px 0; /* Spacing between messages */
+    /* align-items: flex-start; */
+}
+
+.message-bubble {
+    padding: 12px 18px; /* Inner padding */
+    border-radius: 8px;
+    max-width: 90%; /* Limit width */
+    word-wrap: break-word;
+    line-height: 1.6;
+    font-size: 0.95em;
+    position: relative; /* For copy button */
+}
+
+.user-message {
+    background-color: var(--user-bubble-bg);
+    color: var(--text-primary);
+    margin-left: auto; /* Push user messages right conceptually */
+}
+
+.bot-message {
+    background-color: var(--bot-bubble-bg);
+    color: var(--text-primary);
+    margin-right: auto; /* Keep bot messages left */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
+}
+
+/* Message content (actual text) */
+.message-content {
+     white-space: pre-wrap;
+     /* Add support for code blocks later if needed */
+}
+
+/* Copy button adjustments */
+.bot-message .clipboard-container {
+    position: absolute;
+    top: 8px; /* Position near top right */
+    right: 8px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.2s ease;
+    background-color: rgba(0,0,0,0.2); /* Subtle background */
+    border-radius: 4px;
+    padding: 2px;
+}
+.message-bubble:hover .clipboard-container {
+    opacity: 0.7; /* Show on hover */
+}
+.clipboard-container:hover {
+    opacity: 1;
+}
+.bot-message .copy-button {
+    font-size: 0.75em !important;
+    padding: 1px 5px !important;
+    background-color: transparent !important; /* Match container */
+    border: none !important;
+    color: var(--text-secondary) !important;
+    cursor: pointer;
+}
+.bot-message .copy-button:hover {
+    color: var(--text-primary) !important;
+}
+/* Hide the default dcc.Clipboard element */
+.dash-clipboard { display: none; }
+
+
+/* --- Bottom Input Area --- */
+
+/* REMOVED: The #input-area-wrapper rule was removed as it conflicted with absolute positioning */
+/* You should also REMOVE the corresponding <div id="input-area-wrapper"> from your HTML */
+
+#input-area-container {
+    position: absolute; /* Fixed position relative to #main-content */
+    bottom: 0;
+    left: 0; /* Align with #main-content */
+    right: 0; /* Align with #main-content */
+    padding: 20px 15%; /* Centered input bar */
+    box-sizing: border-box;
+    /* Add a background gradient to fade out the bottom of the chat list */
+    /* Note: This gradient is on the container, not the chat wrapper */
+    background: linear-gradient(to top, var(--bg-primary) 20%, rgba(32, 33, 35, 0));
+    pointer-events: none; /* Allow clicks/scrolls to pass through the gradient area */
+}
+#input-area-container > * {
+    pointer-events: auto; /* Re-enable pointer events for children (the form) */
+}
+
+
+#input-form {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 8px 8px 8px 15px; /* Padding around textarea and button */
+    display: flex;
+    align-items: center; /* Align items vertically */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+#user-question {
+    flex-grow: 1;
+    background-color: transparent;
+    color: var(--text-primary);
+    border: none;
+    resize: none; /* Keep resize disabled */
+    /* Remove fixed min/initial height if using rows=1 */
+    /* min-height: 24px; */
+    /* height: auto; Remove fixed height */
+    max-height: 150px; /* Keep max height before scrolling */
+    overflow-y: auto !important; /* Ensure vertical scroll appears when needed */
+    outline: none;
+    box-shadow: none;
+    padding: 8px 10px 8px 0; /* Adjust padding slightly, especially right */
+    font-size: 0.95em;
+    line-height: 1.6; /* Ensure line height is sufficient */
+    white-space: pre-wrap; /* Allow wrapping */
+    word-wrap: break-word; /* Break long words */
+    /* Add transition for smoother height change if needed */
+    /* transition: height 0.1s ease-out; */
+}
+#user-question:disabled {
+     cursor: not-allowed;
+     opacity: 0.6;
+}
+
+#ask-button {
+    background-color: var(--accent-color);
+    border: none;
+    color: white;
+    border-radius: 5px;
+    width: 36px; /* Square-ish button */
+    height: 36px;
+    flex-shrink: 0; /* Prevent shrinking */
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+#ask-button:hover:not(:disabled) {
+    background-color: #0e8a6a; /* Darker accent */
+}
+#ask-button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Simple send icon using SVG or FontAwesome later */
+/* For now, just text */
+/* #ask-button::before { content: '➤'; font-size: 1.2em; } */

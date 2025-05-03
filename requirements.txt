@@ -1,0 +1,13 @@
+# requirements.txt
+dash
+dash-bootstrap-components
+pandas
+# PyPDF2
+python-docx
+scikit-learn
+nltk # Optional
+pdfminer.six
+# openai >= 1.0 # Comment out or remove
+google-generativeai # Add this
+python-dotenv
+numpy
